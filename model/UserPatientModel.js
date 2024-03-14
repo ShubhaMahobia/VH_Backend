@@ -14,7 +14,7 @@ const PatientUserSchema = new mongoose.Schema({
     required: true,
   },
   phoneNumber: {
-    type: Int8Array,
+    type: String,
     required: true,
   },
   dateOfBirth: {

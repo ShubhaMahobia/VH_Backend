@@ -7,6 +7,7 @@ app.listen(port, function () {
   console.log(`Server Running on PORT ${port}`);
 });
 app.use(express.json());
+app.use("/api", router);
 
 //Connection with Database - MongoDB
 mongoose

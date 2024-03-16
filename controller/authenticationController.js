@@ -1,6 +1,5 @@
 const express = require("express");
 const userPatient = require("../model/UserPatientModel");
-const bcrypt = require("bcryptjs");
 
 exports.test = (req, res) => {
   try {

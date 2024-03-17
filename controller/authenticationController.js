@@ -1,6 +1,7 @@
 const express = require("express");
 const userPatient = require("../model/UserPatientModel");
 const bcrypt = require("bcryptjs");
+const userDoctor = require("../model/UserDoctorModel");
 
 
 //This is a test function to check is the server is running or not.
@@ -80,4 +81,53 @@ exports.signUpPatient = async (req, res) => {
       message: "Internal Server Error",
     });
   }
-};  
+}
+//This is the create Profile Function for the user(Doctor)
+exports.signUpDoctor = async (req, res) => {
+  try {
+
+    //Here we are saving the identification number in encrypted form so that it will be secured in our database
+    const identificationNumber = req.body.identificationNumber;
+    const hashedIdentificationNumber = await bcrypt.hash(
+      identificationNumber,
+      12
+    );
+
+  //Creating Doctor Object 
+    const doctor = new userDoctor({
+      firebaseUserId: req.body.firebaseUserId,
+      firstName: req.body.firstName,
+      LastName: req.body.lastName,
+      Email: req.body.email,
+      phoneNumber: req.body.phoneNumber,
+      Experience: req.body.experience,
+      SpecializedField: req.body.specializedField,
+      gender: req.body.gender,
+      identificationNumber: hashedIdentificationNumber,
+      latitude: req.body.latitude,
+      longitude: req.body.longitude,
+    });
+    const userExist = await userDoctor.findOne({
+      identificationNumber: req.body.identificationNumber,
+    });
+    // Checking for unique Identification Number for every user -
+    if (userExist) {
+      return res.status(400).json({
+        success: false,
+        message: "Identification Number Already Exist in Database",
+      });
+    }
+    await doctor.save(); //Saving command for saving user to database
+    return res.status(200).json({
+      success: true,
+      message: "User data saved successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+}
+

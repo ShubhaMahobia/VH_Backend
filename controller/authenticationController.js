@@ -132,7 +132,7 @@ exports.signUpDoctor = async (req, res) => {
   }
 }
 
-//Login Fuction for fetching user details 
+//Login Fuction for fetching user Patient details 
 exports.fetchUserDetails=  async (req, res) => {
   try { 
     const email=req.body.email;
@@ -141,6 +141,31 @@ exports.fetchUserDetails=  async (req, res) => {
     }
    else{
     const user=await userPatient.findOne({Email:email});
+   if(!user){
+    return res.status(401).json({success:false,message:"Authentication failed! Email not found."});
+   }
+   else{
+    return res.status(401).json({success:true,data: user, message:"User success"});
+   }
+   }
+
+
+  } catch (err) {
+    return res.status(500).json({success:false,message:"Internal Server Error"});
+
+  }
+}
+
+
+//Login Fuction for fetching user Doctor details
+exports.fetchDoctorDetails=  async (req, res) => {
+  try { 
+    const email=req.body.email;
+    if( email==null){
+      return res.status(400).json({ success:false ,message:"Please provide an email"});
+    }
+   else{
+    const user=await userDoctor.findOne({Email:email});
    if(!user){
     return res.status(401).json({success:false,message:"Authentication failed! Email not found."});
    }

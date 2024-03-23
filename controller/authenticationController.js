@@ -2,6 +2,7 @@ const express = require("express");
 const userPatient = require("../model/UserPatientModel");
 const bcrypt = require("bcryptjs");
 const userDoctor = require("../model/UserDoctorModel");
+const mongoose = require('mongoose');
 
 
 //This is a test function to check is the server is running or not.
@@ -128,6 +129,30 @@ exports.signUpDoctor = async (req, res) => {
       success: false,
       message: "Internal Server Error",
     });
+  }
+}
+
+//Login Fuction for fetching user details 
+exports.fetchUserDetails=  async (req, res) => {
+  try { 
+    const email=req.body.email;
+    if( email==null){
+      return res.status(400).json({ success:false ,message:"Please provide an email"});
+    }
+   else{
+    const user=await userPatient.findOne({Email:email});
+   if(!user){
+    return res.status(401).json({success:false,message:"Authentication failed! Email not found."});
+   }
+   else{
+    return res.status(401).json({success:true,data: user, message:"User success"});
+   }
+   }
+
+
+  } catch (err) {
+    return res.status(500).json({success:false,message:"Internal Server Error"});
+
   }
 }
 

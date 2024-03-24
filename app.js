@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const router = require("./routes/authenticationRoutes");
 var app = express();
-const port = 3000;
+const port = 8080;
 app.listen(port, function () {
   console.log(`Server Running on PORT ${port}`);
 });

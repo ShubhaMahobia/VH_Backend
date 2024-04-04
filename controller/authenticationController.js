@@ -2,8 +2,7 @@ const express = require("express");
 const userPatient = require("../model/UserPatientModel");
 const bcrypt = require("bcryptjs");
 const userDoctor = require("../model/UserDoctorModel");
-const mongoose = require('mongoose');
-
+const mongoose = require("mongoose");
 
 //This is a test function to check is the server is running or not.
 exports.test = (req, res) => {
@@ -39,7 +38,6 @@ exports.isNewUser = async (req, res) => {
 //This is the create Profile Function for the user(Patient)
 exports.signUpPatient = async (req, res) => {
   try {
-
     //Here we are saving the identification number in encrypted form so that it will be secured in our database
     const identificationNumber = req.body.identificationNumber;
     const hashedIdentificationNumber = await bcrypt.hash(
@@ -47,7 +45,7 @@ exports.signUpPatient = async (req, res) => {
       12
     );
 
-  //Creating patient Object 
+    //Creating patient Object
     const patient = new userPatient({
       firebaseUserId: req.body.firebaseUserId,
       firstName: req.body.firstName,
@@ -82,11 +80,10 @@ exports.signUpPatient = async (req, res) => {
       message: "Internal Server Error",
     });
   }
-}
+};
 //This is the create Profile Function for the user(Doctor)
 exports.signUpDoctor = async (req, res) => {
   try {
-
     //Here we are saving the identification number in encrypted form so that it will be secured in our database
     const identificationNumber = req.body.identificationNumber;
     const hashedIdentificationNumber = await bcrypt.hash(
@@ -94,7 +91,7 @@ exports.signUpDoctor = async (req, res) => {
       12
     );
 
-  //Creating Doctor Object 
+    //Creating Doctor Object
     const doctor = new userDoctor({
       firebaseUserId: req.body.firebaseUserId,
       firstName: req.body.firstName,
@@ -130,54 +127,75 @@ exports.signUpDoctor = async (req, res) => {
       message: "Internal Server Error",
     });
   }
-}
+};
 
-//Login Fuction for fetching user Patient details 
-exports.fetchUserDetails=  async (req, res) => {
-  try { 
-    const email=req.body.email;
-    if( email==null){
-      return res.status(400).json({ success:false ,message:"Please provide an email"});
+//Login Fuction for fetching user Patient details
+exports.fetchUserDetails = async (req, res) => {
+  try {
+    const email = req.body.email;
+    if (email == null) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Please provide an email" });
+    } else {
+      const user = await userPatient.findOne({ Email: email });
+      if (!user) {
+        return res.status(401).json({
+          success: false,
+          message: "Authentication failed! Email not found.",
+        });
+      } else {
+        return res
+          .status(401)
+          .json({ success: true, data: user, message: "User success" });
+      }
     }
-   else{
-    const user=await userPatient.findOne({Email:email});
-   if(!user){
-    return res.status(401).json({success:false,message:"Authentication failed! Email not found."});
-   }
-   else{
-    return res.status(401).json({success:true,data: user, message:"User success"});
-   }
-   }
-
-
   } catch (err) {
-    return res.status(500).json({success:false,message:"Internal Server Error"});
-
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error" });
   }
-}
-
+};
 
 //Login Fuction for fetching user Doctor details
-exports.fetchDoctorDetails=  async (req, res) => {
-  try { 
-    const email=req.body.email;
-    if( email==null){
-      return res.status(400).json({ success:false ,message:"Please provide an email"});
+exports.fetchDoctorDetails = async (req, res) => {
+  try {
+    const email = req.body.email;
+    if (email == null) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Please provide an email" });
+    } else {
+      const user = await userDoctor.findOne({ Email: email });
+      if (!user) {
+        return res.status(401).json({
+          success: false,
+          message: "Authentication failed! Email not found.",
+        });
+      } else {
+        return res
+          .status(401)
+          .json({ success: true, data: user, message: "User success" });
+      }
     }
-   else{
-    const user=await userDoctor.findOne({Email:email});
-   if(!user){
-    return res.status(401).json({success:false,message:"Authentication failed! Email not found."});
-   }
-   else{
-    return res.status(401).json({success:true,data: user, message:"User success"});
-   }
-   }
-
-
   } catch (err) {
-    return res.status(500).json({success:false,message:"Internal Server Error"});
-
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error" });
   }
-}
+};
 
+//Function for fetching all the doctors
+exports.fetchAllDoctors = async (req, res) => {
+  try {
+    const allDoctors = await userDoctor.find({});
+    console.log(allDoctors);
+    return res
+      .status(200)
+      .json({ success: true, message: "Details fetched successfully" });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error" });
+  }
+};

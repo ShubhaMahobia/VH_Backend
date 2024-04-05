@@ -7,8 +7,12 @@ const {
   loginUser,
   fetchUserDetails,
   fetchDoctorDetails,
-  fetchAllDoctors,
 } = require("../controller/authenticationController");
+
+const {
+  fetchAllDoctors,
+  fetchDoctorById,
+} = require("../controller/doctorController");
 const router = express.Router();
 
 router.get("/", test);
@@ -18,5 +22,6 @@ router.post("/registerDoctor", signUpDoctor);
 router.post("/getUser", fetchUserDetails);
 router.post("/getDoctor", fetchDoctorDetails);
 router.get("/getAllDoctors", fetchAllDoctors);
+router.get("/getDoctorById/:id", fetchDoctorById);
 
 module.exports = router;

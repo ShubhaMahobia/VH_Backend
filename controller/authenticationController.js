@@ -185,17 +185,4 @@ exports.fetchDoctorDetails = async (req, res) => {
   }
 };
 
-//Function for fetching all the doctors
-exports.fetchAllDoctors = async (req, res) => {
-  try {
-    const allDoctors = await userDoctor.find({});
-    console.log(allDoctors);
-    return res
-      .status(200)
-      .json({ success: true, message: "Details fetched successfully" });
-  } catch (err) {
-    return res
-      .status(500)
-      .json({ success: false, message: "Internal Server Error" });
-  }
-};
+

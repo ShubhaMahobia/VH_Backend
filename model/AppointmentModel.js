@@ -28,10 +28,6 @@ const AppointmentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  identificationNumber: {
-    type: String,
-    required: true,
-  },
 });
 
 const appointment = mongoose.model("Appointment", AppointmentSchema);

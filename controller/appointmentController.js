@@ -8,12 +8,6 @@ const mongoose = require("mongoose");
 //Function for Booking the appointment
 exports.bookAppointment = async (req, res) => {
   try {
-    //Here we are saving the identification number in encrypted form so that it will be secured in our database
-    const identificationNumber = req.body.identificationNumber;
-    const hashedIdentificationNumber = await bcrypt.hash(
-      identificationNumber,
-      12
-    );
 
     //Creating appointment Object
     const newAppointment = new Appointment({
@@ -22,11 +16,10 @@ exports.bookAppointment = async (req, res) => {
       timeSlot: req.body.timeSlot,
       day: req.body.day,
       description: req.body.description,
-      identificationNumber: hashedIdentificationNumber,
       meetingLink: req.body.meetingLink,
     });
     const appointmentExist = await Appointment.findOne({
-      identificationNumber: req.body.identificationNumber,
+        meetingLink: req.body.meetingLink,
     });
     // Checking for unique Identification Number for every appointment -
     if (appointmentExist) {
@@ -93,9 +86,7 @@ exports.getAppointmentDetails = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Appointment details fetched successfully",
-      message: "Appointment details fetched successfully",
       appointment: {
-        _id: appointment._id,
         timeSlot: appointment.timeSlot,
         day: appointment.day,
         description: appointment.description,

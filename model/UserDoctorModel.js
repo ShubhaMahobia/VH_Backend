@@ -21,13 +21,36 @@ const DoctorUserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  
+
   Experience: {
     type: String,
     required: true,
   },
 
   SpecializedField: {
+    type: String,
+    required: true,
+  },
+
+  availability: {
+    type: [{
+      day: String,
+      time: String
+    }],
+    required: true,
+  },
+
+  profilePicture: {
+    type: String,
+    required: true,
+  },
+
+  address: {
+    type: String,
+    required: true,
+  },
+
+  degree: {
     type: String,
     required: true,
   },

@@ -12,6 +12,7 @@ const {
 const {
   fetchAllDoctors,
   fetchDoctorById,
+  updateDoctorProfile
 } = require("../controller/doctorController");
 
 const { updatePatientProfile } = require("../controller/patientController");
@@ -29,6 +30,7 @@ router.post("/getDoctor", fetchDoctorDetails);
 router.get("/getAllDoctors", fetchAllDoctors);
 router.get("/getDoctorById/:id", fetchDoctorById);
 router.put("/updatePatient/:id", updatePatientProfile);
+router.put("/updateDoctor/:id",updateDoctorProfile);
 
 //Appointment route
 router.post("/bookAppointment", bookAppointment);

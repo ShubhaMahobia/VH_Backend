@@ -41,3 +41,35 @@ exports.fetchDoctorById = async (req, res) => {
       .json({ success: false, message: "Internal Server Error" });
   }
 };
+
+// Controller function to update doctor profile
+exports.updateDoctorProfile = async (req, res) => {
+  try {
+    const doctorId = req.params.id; // Assuming the ID is passed as a route parameter
+    const updates = req.body; // Assuming updates are sent in the request body
+
+    const updatedDoctor = await userDoctor.findOneAndUpdate(
+      { firebaseUserId: doctorId }, // Find by firebaseUserId
+      updates,
+      { new: true }
+    );
+
+    if (!updatedDoctor) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Patient not found" });
+    }
+    console.log(updatedDoctor);
+
+    return res.status(200).json({
+      success: true,
+      message: "Doctor profile updated successfully",
+      data: updatedDoctor,
+    });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error" });
+  }
+};
+

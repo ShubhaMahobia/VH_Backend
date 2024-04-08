@@ -12,12 +12,20 @@ const {
 const {
   fetchAllDoctors,
   fetchDoctorById,
-  updateDoctorProfile
+  updateDoctorProfile,
 } = require("../controller/doctorController");
 
 const { updatePatientProfile } = require("../controller/patientController");
 
-const { bookAppointment ,getAppointmentDetails} = require("../controller/appointmentController");
+const {
+  bookAppointment,
+  getAppointmentDetails,
+} = require("../controller/appointmentController");
+
+const {
+  generatePrecription,
+  getPrescriptionDetails,
+} = require("../controller/prescriptionController");
 
 const router = express.Router();
 
@@ -30,10 +38,14 @@ router.post("/getDoctor", fetchDoctorDetails);
 router.get("/getAllDoctors", fetchAllDoctors);
 router.get("/getDoctorById/:id", fetchDoctorById);
 router.put("/updatePatient/:id", updatePatientProfile);
-router.put("/updateDoctor/:id",updateDoctorProfile);
+router.put("/updateDoctor/:id", updateDoctorProfile);
 
 //Appointment route
 router.post("/bookAppointment", bookAppointment);
-router.get('/getAppointments/:id', getAppointmentDetails);
+router.get("/getAppointments/:id", getAppointmentDetails);
+
+//Prescription route
+router.post("/generatePrescription", generatePrecription);
+router.get("/getPrescription/:id", getPrescriptionDetails);
 
 module.exports = router;

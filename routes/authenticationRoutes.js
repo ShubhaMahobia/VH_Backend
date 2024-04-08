@@ -27,6 +27,11 @@ const {
   getPrescriptionDetails,
 } = require("../controller/prescriptionController");
 
+const {
+  getDocumentDetails ,
+  uploadDocument
+} = require("../controller/documentController");
+
 const router = express.Router();
 
 router.get("/", test);
@@ -47,5 +52,9 @@ router.get("/getAppointments/:id", getAppointmentDetails);
 //Prescription route
 router.post("/generatePrescription", generatePrecription);
 router.get("/getPrescription/:id", getPrescriptionDetails);
+
+//Document route
+router.post("/uploadDocument", uploadDocument);
+router.get("/getDocument/:id", getDocumentDetails);
 
 module.exports = router;

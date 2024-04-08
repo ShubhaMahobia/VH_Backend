@@ -136,13 +136,13 @@ exports.signUpDoctor = async (req, res) => {
 //Login Fuction for fetching user Patient details
 exports.fetchUserDetails = async (req, res) => {
   try {
-    const email = req.body.email;
-    if (email == null) {
+    const userID = req.body.id;
+    if (userID == null) {
       return res
         .status(400)
-        .json({ success: false, message: "Please provide an email" });
+        .json({ success: false, message: "Please provide an id" });
     } else {
-      const user = await userPatient.findOne({ Email: email });
+      const user = await userPatient.findOne({ firebaseUserId: userID });
       if (!user) {
         return res.status(401).json({
           success: false,
@@ -168,7 +168,7 @@ exports.fetchDoctorDetails = async (req, res) => {
     if (docid == null) {
       return res
         .status(400)
-        .json({ success: false, message: "Please provide an email" });
+        .json({ success: false, message: "Please provide an id" });
     } else {
       const doctor = await userDoctor.findOne({ firebaseUserId: docid });
       if (!doctor) {

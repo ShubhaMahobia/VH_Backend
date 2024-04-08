@@ -101,7 +101,10 @@ exports.signUpDoctor = async (req, res) => {
       Experience: req.body.experience,
       SpecializedField: req.body.specializedField,
       gender: req.body.gender,
-      availability: req.body.availability,
+      startTimeHour: req.body.startTimeHour,
+      endTimeHour: req.body.endTimeHour,
+      startTimeMin: req.body.startTimeMin,
+      endTimeMin: req.body.endTimeMin,
       profilePicture: req.body.profilePicture,
       address: req.body.address,
       degree: req.body.degree,
@@ -188,5 +191,3 @@ exports.fetchDoctorDetails = async (req, res) => {
       .json({ success: false, message: "Internal Server Error" });
   }
 };
-
-

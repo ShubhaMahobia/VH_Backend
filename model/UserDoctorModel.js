@@ -32,11 +32,23 @@ const DoctorUserSchema = new mongoose.Schema({
     required: true,
   },
 
-  availability: {
-    type: [{
-      day: String,
-      time: String
-    }],
+  startTimeHour: {
+    type: String,
+    required: true,
+  },
+
+  endTimeHour: {
+    type: String,
+    required: true,
+  },
+
+  startTimeMin: {
+    type: String,
+    required: true,
+  },
+
+  endTimeMin: {
+    type: String,
     required: true,
   },
 

@@ -164,14 +164,14 @@ exports.fetchUserDetails = async (req, res) => {
 //Login Fuction for fetching user Doctor details
 exports.fetchDoctorDetails = async (req, res) => {
   try {
-    const email = req.body.email;
-    if (email == null) {
+    const docid = req.body.id;
+    if (docid == null) {
       return res
         .status(400)
         .json({ success: false, message: "Please provide an email" });
     } else {
-      const user = await userDoctor.findOne({ Email: email });
-      if (!user) {
+      const doctor = await userDoctor.findOne({ firebaseUserId: docid });
+      if (!doctor) {
         return res.status(401).json({
           success: false,
           message: "Authentication failed! Email not found.",
@@ -179,7 +179,7 @@ exports.fetchDoctorDetails = async (req, res) => {
       } else {
         return res
           .status(401)
-          .json({ success: true, data: user, message: "User success" });
+          .json({ success: true, data: doctor, message: "User success" });
       }
     }
   } catch (err) {

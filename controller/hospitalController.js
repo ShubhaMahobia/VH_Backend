@@ -132,25 +132,29 @@ exports.getHospitalDetails = async (req, res) => {
 exports.fetchHospitalsByLocation = async (req, res) => {
   try {
     const { latitude, longitude } = req.body; // Assuming latitude and longitude are passed in the request body
-    const radius = req.query.radius || 10000; // Default radius of 5km, can be overridden in query parameter
+    const radius = req.query.radius || 10000; // Default radius of 10km, can be overridden in query parameter
 
     // Fetch all hospitals from the database
     const hospitals = await Hospital.find();
 
-    // Filter hospitals based on distance from patient's location
-    const nearbyHospitals = hospitals.filter((hospital) => {
-      const hospitalLocation = {
-        latitude: hospital.latitude,
-        longitude: hospital.longitude,
-      };
-      const distance = geolib.getDistance(
-        { latitude, longitude },
-        hospitalLocation
-      );
-      return distance <= radius;
-    });
-
-    res.json(nearbyHospitals);
+    // If latitude and longitude are provided, filter hospitals based on distance from patient's location
+    if (latitude && longitude) {
+      const nearbyHospitals = hospitals.filter((hospital) => {
+        const hospitalLocation = {
+          latitude: hospital.latitude,
+          longitude: hospital.longitude,
+        };
+        const distance = geolib.getDistance(
+          { latitude, longitude },
+          hospitalLocation
+        );
+        return distance <= radius;
+      });
+      res.json(nearbyHospitals);
+    } else {
+      // If latitude and longitude are not provided, return all hospitals
+      res.json(hospitals);
+    }
   } catch (error) {
     console.error("Error fetching hospitals:", error);
     res.status(500).json({

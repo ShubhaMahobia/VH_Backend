@@ -28,9 +28,14 @@ const {
 } = require("../controller/prescriptionController");
 
 const {
-  getDocumentDetails ,
-  uploadDocument
+  getDocumentDetails,
+  uploadDocument,
 } = require("../controller/documentController");
+
+const {
+  addHospital,
+  getHospitalDetails,
+} = require("../controller/hospitalController");
 
 const router = express.Router();
 
@@ -56,5 +61,9 @@ router.get("/getPrescription/:id", getPrescriptionDetails);
 //Document route
 router.post("/uploadDocument", uploadDocument);
 router.get("/getDocument/:id", getDocumentDetails);
+
+//Hospital route
+router.post("/addHospital", addHospital);
+router.get("/getHospital/:id", getHospitalDetails);
 
 module.exports = router;

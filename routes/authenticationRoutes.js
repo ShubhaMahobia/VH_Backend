@@ -35,6 +35,8 @@ const {
 const {
   addHospital,
   getHospitalDetails,
+  getAllHospitalDetails,
+  fetchHospitalsByLocation,
 } = require("../controller/hospitalController");
 
 const router = express.Router();
@@ -65,5 +67,7 @@ router.get("/getDocument/:id", getDocumentDetails);
 //Hospital route
 router.post("/addHospital", addHospital);
 router.get("/getHospital/:id", getHospitalDetails);
+router.get("/getAllHospital", getAllHospitalDetails);
+router.post("/fetchHospitals", fetchHospitalsByLocation);
 
 module.exports = router;

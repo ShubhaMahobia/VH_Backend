@@ -38,7 +38,7 @@ exports.generatePrecription = async (req, res) => {
 
     // Find doctor details using doctorId
     const doctor = await UserDoctor.findOne({
-        firebaseUserId: document.doctorId,
+      firebaseUserId: document.doctorId,
     });
 
     // Send prescription data via email
@@ -46,29 +46,26 @@ exports.generatePrecription = async (req, res) => {
       // Configure your email provider here
       service: "gmail",
       auth: {
-        user: "archikirar@gmail.com", // Your email address
-        pass: "hmda upmd yorx xsnb", // Your email password or app password if using Gmail
+        user: "mahobiashubham4@gmail.com",
+        pass: "oczd hhhw kzms bpfa",
       },
     });
 
     const mailOptions = {
-      from:doctor.Email ,
+      from: doctor.Email,
       to: patient.Email, // Replace with the recipient's email address
       subject: "New Prescription",
       text: `A new prescription has been submitted:\nDoctor Name: ${doctor.firstName} ${doctor.firstName}\nDate: ${newPrescription.date}\nTitle: ${newPrescription.title}\nDescription: ${newPrescription.description}`,
       attachments: [
         {
-          filename: "prescription.pdf", // Change the filename as needed
-          path: newPrescription.documentLink, // Provide the file path
-          // Alternatively, you can provide attachment content as a Buffer
-          // content: Buffer.from('attachment content'),
-          // contentType: 'application/pdf' // Specify the content type if needed
+          filename: "prescription.pdf",
+          path: newPrescription.documentLink,
         },
       ],
     };
 
     await transporter.sendMail(mailOptions);
-    await newPrescription.save(); //Saving command for saving apointments to database
+    await newPrescription.save();
     return res.status(200).json({
       success: true,
       message: "Prescription Generated successfully",
@@ -105,13 +102,10 @@ exports.getPrescriptionDetails = async (req, res) => {
         message: "prescription not found",
       });
     }
-
-    // Find patient details using patientId
     const patient = await UserPatient.findOne({
       firebaseUserId: prescription.patientId,
     });
 
-    // Find doctor details using doctorId
     const doctor = await UserDoctor.findOne({
       firebaseUserId: prescription.doctorId,
     });

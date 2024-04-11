@@ -13,13 +13,15 @@ exports.bookAppointment = async (req, res) => {
     const newAppointment = new Appointment({
       doctorId: req.body.doctorId,
       patientId: req.body.patientId,
-      timeSlot: req.body.timeSlot,
-      day: req.body.day,
+      date: req.body.date,
+      meetingHour: req.body.meetingHour,
+      startTimeMin: req.body.startTimeMin,
+      endTimeMin: req.body.endTimeMin,
       description: req.body.description,
-      meetingLink: req.body.meetingLink,
+      meetingId: req.body.meetingId,
     });
     const appointmentExist = await Appointment.findOne({
-        meetingLink: req.body.meetingLink,
+      meetingId: req.body.meetingId,
     });
     // Checking for unique Identification Number for every appointment -
     if (appointmentExist) {

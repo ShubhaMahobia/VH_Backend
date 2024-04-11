@@ -9,12 +9,22 @@ const AppointmentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  timeSlot: {
+  date: {
     type: String,
     required: true,
   },
 
-  day: {
+  meetingHour: {
+    type: String,
+    required: true,
+  },
+  
+  startTimeMin: {
+    type: String,
+    required: true,
+  },
+
+  endTimeMin: {
     type: String,
     required: true,
   },
@@ -24,7 +34,7 @@ const AppointmentSchema = new mongoose.Schema({
     required: true,
   },
 
-  meetingLink: {
+  meetingId: {
     type: String,
     required: true,
   },

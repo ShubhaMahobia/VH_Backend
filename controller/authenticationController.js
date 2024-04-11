@@ -101,7 +101,10 @@ exports.signUpDoctor = async (req, res) => {
       Experience: req.body.experience,
       SpecializedField: req.body.specializedField,
       gender: req.body.gender,
-      availability: req.body.availability,
+      startTimeHour: req.body.startTimeHour,
+      endTimeHour: req.body.endTimeHour,
+      startTimeMin: req.body.startTimeMin,
+      endTimeMin: req.body.endTimeMin,
       profilePicture: req.body.profilePicture,
       address: req.body.address,
       degree: req.body.degree,
@@ -136,13 +139,13 @@ exports.signUpDoctor = async (req, res) => {
 //Login Fuction for fetching user Patient details
 exports.fetchUserDetails = async (req, res) => {
   try {
-    const email = req.body.email;
-    if (email == null) {
+    const userID = req.body.id;
+    if (userID == null) {
       return res
         .status(400)
-        .json({ success: false, message: "Please provide an email" });
+        .json({ success: false, message: "Please provide an id" });
     } else {
-      const user = await userPatient.findOne({ Email: email });
+      const user = await userPatient.findOne({ firebaseUserId: userID });
       if (!user) {
         return res.status(401).json({
           success: false,
@@ -168,7 +171,7 @@ exports.fetchDoctorDetails = async (req, res) => {
     if (docid == null) {
       return res
         .status(400)
-        .json({ success: false, message: "Please provide an email" });
+        .json({ success: false, message: "Please provide an id" });
     } else {
       const doctor = await userDoctor.findOne({ firebaseUserId: docid });
       if (!doctor) {
@@ -188,5 +191,3 @@ exports.fetchDoctorDetails = async (req, res) => {
       .json({ success: false, message: "Internal Server Error" });
   }
 };
-
-

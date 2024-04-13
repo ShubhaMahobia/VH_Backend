@@ -1,11 +1,6 @@
 const mongoose = require("mongoose");
 
 const timeSlotSchema = new mongoose.Schema({
-  docId: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   startTime: { type: Date, required: true },
   endTime: { type: Date, required: true },
   isBooked: { type: Boolean, required: true, default: false },
@@ -13,6 +8,11 @@ const timeSlotSchema = new mongoose.Schema({
 });
 
 const scheduleSchema = new mongoose.Schema({
+  docId: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   timeSlots: [timeSlotSchema],
 });
 

@@ -5,6 +5,7 @@ const DoctorUserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+
   firstName: {
     type: String,
     required: true,
@@ -42,16 +43,6 @@ const DoctorUserSchema = new mongoose.Schema({
     required: true,
   },
 
-  startTimeMin: {
-    type: String,
-    required: true,
-  },
-
-  endTimeMin: {
-    type: String,
-    required: true,
-  },
-
   profilePicture: {
     type: String,
     required: true,
@@ -71,8 +62,14 @@ const DoctorUserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  identificationNumber: {
+
+  breifDescription: {
     type: String,
+    required: true,
+  },
+
+  daysAvailable: {
+    type: [Number],
     required: true,
   },
   //Adding these field to save exact address of the user by their location and we can update if we want in future.

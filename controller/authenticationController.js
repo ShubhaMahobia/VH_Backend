@@ -125,16 +125,10 @@ exports.signUpDoctor = async (req, res) => {
     const endHour = new Date(`2024-01-01T${req.body.endTimeHour}:00Z`);
     let currentTime = new Date(startHour);
     console.log(currentTime);
-
-    // Loop until currentTime reaches the endHour
     while (currentTime < endHour) {
       const startTime = new Date(currentTime);
       const endTime = new Date(currentTime.getTime() + 30 * 60000); // 30 minutes later
-
-      // Push the time slot to the array
       timeSlots.push({ startTime, endTime });
-
-      // Move to the next 30-minute interval
       currentTime = new Date(currentTime.getTime() + 30 * 60000);
     }
     const schedule = new Schedule({

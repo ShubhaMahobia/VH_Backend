@@ -3,6 +3,7 @@ const userPatient = require("../model/UserPatientModel");
 const bcrypt = require("bcryptjs");
 const userDoctor = require("../model/UserDoctorModel");
 const mongoose = require("mongoose");
+const Schedule = require("../model/timeslotModel");
 
 //This is a test function to check is the server is running or not.
 exports.test = (req, res) => {
@@ -85,47 +86,65 @@ exports.signUpPatient = async (req, res) => {
 exports.signUpDoctor = async (req, res) => {
   try {
     //Here we are saving the identification number in encrypted form so that it will be secured in our database
-    const identificationNumber = req.body.identificationNumber;
-    const hashedIdentificationNumber = await bcrypt.hash(
-      identificationNumber,
-      12
-    );
 
     //Creating Doctor Object
     const doctor = new userDoctor({
       firebaseUserId: req.body.firebaseUserId,
       firstName: req.body.firstName,
-      LastName: req.body.lastName,
-      Email: req.body.email,
+      lastName: req.body.lastName,
+      email: req.body.email,
       phoneNumber: req.body.phoneNumber,
-      Experience: req.body.experience,
-      SpecializedField: req.body.specializedField,
+      experience: req.body.experience,
+      specializedField: req.body.specializedField,
       gender: req.body.gender,
       startTimeHour: req.body.startTimeHour,
       endTimeHour: req.body.endTimeHour,
-      startTimeMin: req.body.startTimeMin,
-      endTimeMin: req.body.endTimeMin,
       profilePicture: req.body.profilePicture,
       address: req.body.address,
       degree: req.body.degree,
-      identificationNumber: hashedIdentificationNumber,
+      breifDescription: req.body.breifDescription,
+      daysAvailable: req.body.daysAvailable,
       latitude: req.body.latitude,
       longitude: req.body.longitude,
     });
+    //Checking is user already exist in database or not
     const userExist = await userDoctor.findOne({
-      identificationNumber: req.body.identificationNumber,
+      firebaseUserId: req.body.firebaseUserId,
     });
-    // Checking for unique Identification Number for every user -
+
     if (userExist) {
       return res.status(400).json({
         success: false,
-        message: "Identification Number Already Exist in Database",
+        message: "User Already Exist in Database",
       });
     }
-    await doctor.save(); //Saving command for saving user to database
+    await doctor.save();
+    const timeSlots = [];
+
+    const startHour = new Date(`2024-01-01T${req.body.startTimeHour}:00Z`);
+    const endHour = new Date(`2024-01-01T${req.body.endTimeHour}:00Z`);
+    let currentTime = new Date(startHour);
+    console.log(currentTime);
+
+    // Loop until currentTime reaches the endHour
+    while (currentTime < endHour) {
+      const startTime = new Date(currentTime);
+      const endTime = new Date(currentTime.getTime() + 30 * 60000); // 30 minutes later
+
+      // Push the time slot to the array
+      timeSlots.push({ startTime, endTime });
+
+      // Move to the next 30-minute interval
+      currentTime = new Date(currentTime.getTime() + 30 * 60000);
+    }
+    const schedule = new Schedule({
+      docId: req.body.firebaseUserId,
+      timeSlots: timeSlots,
+    });
+    await schedule.save(); //Saving command for saving user to database
     return res.status(200).json({
       success: true,
-      message: "User data saved successfully",
+      message: "Doctor Profile Created Successfully",
     });
   } catch (error) {
     console.log(error);

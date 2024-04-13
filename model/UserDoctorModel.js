@@ -10,11 +10,11 @@ const DoctorUserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  LastName: {
+  lastName: {
     type: String,
     required: true,
   },
-  Email: {
+  email: {
     type: String,
     required: true,
   },
@@ -23,12 +23,12 @@ const DoctorUserSchema = new mongoose.Schema({
     required: true,
   },
 
-  Experience: {
+  experience: {
     type: String,
     required: true,
   },
 
-  SpecializedField: {
+  specializedField: {
     type: String,
     required: true,
   },

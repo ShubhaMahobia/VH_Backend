@@ -103,7 +103,6 @@ exports.signUpDoctor = async (req, res) => {
       address: req.body.address,
       degree: req.body.degree,
       breifDescription: req.body.breifDescription,
-      daysAvailable: req.body.daysAvailable,
       latitude: req.body.latitude,
       longitude: req.body.longitude,
     });
@@ -119,21 +118,22 @@ exports.signUpDoctor = async (req, res) => {
       });
     }
     await doctor.save();
-    const timeSlots = [];
 
+    const timeSlots = [];
     const startHour = new Date(`2024-01-01T${req.body.startTimeHour}:00Z`);
     const endHour = new Date(`2024-01-01T${req.body.endTimeHour}:00Z`);
     let currentTime = new Date(startHour);
-    console.log(currentTime);
     while (currentTime < endHour) {
       const startTime = new Date(currentTime);
       const endTime = new Date(currentTime.getTime() + 30 * 60000); // 30 minutes later
       timeSlots.push({ startTime, endTime });
       currentTime = new Date(currentTime.getTime() + 30 * 60000);
     }
+    console.log(timeSlots);
     const schedule = new Schedule({
       docId: req.body.firebaseUserId,
       timeSlots: timeSlots,
+      daysAvailable: req.body.daysAvailable,
     });
     await schedule.save(); //Saving command for saving user to database
     return res.status(200).json({

@@ -14,6 +14,17 @@ const scheduleSchema = new mongoose.Schema({
     unique: true,
   },
   timeSlots: [timeSlotSchema],
+  daysAvailable: {
+    type: {
+      Monday: Boolean,
+      Tuesday: Boolean,
+      Wednesday: Boolean,
+      Thursday: Boolean,
+      Friday: Boolean,
+      Saturday: Boolean,
+    },
+    required: true,
+  },
 });
 
 const Schedule = mongoose.model("Schedule", scheduleSchema);

@@ -85,9 +85,6 @@ exports.signUpPatient = async (req, res) => {
 //This is the create Profile Function for the user(Doctor)
 exports.signUpDoctor = async (req, res) => {
   try {
-    //Here we are saving the identification number in encrypted form so that it will be secured in our database
-
-    //Creating Doctor Object
     const doctor = new userDoctor({
       firebaseUserId: req.body.firebaseUserId,
       firstName: req.body.firstName,
@@ -110,6 +107,12 @@ exports.signUpDoctor = async (req, res) => {
     const userExist = await userDoctor.findOne({
       firebaseUserId: req.body.firebaseUserId,
     });
+    if (req.body.startTimeHour > req.body.endTimeHour) {
+      return res.status(400).json({
+        success: false,
+        message: "Start time should be less than end time",
+      });
+    }
 
     if (userExist) {
       return res.status(400).json({
@@ -117,9 +120,14 @@ exports.signUpDoctor = async (req, res) => {
         message: "User Already Exist in Database",
       });
     }
-    await doctor.save();
 
     const timeSlots = [];
+    if (req.body.startTimeHour < 10) {
+      req.body.startTimeHour = "0" + req.body.startTimeHour;
+    }
+    if (req.body.endTimeHour < 10) {
+      req.body.endTimeHour = "0" + req.body.endTimeHour;
+    }
     const startHour = new Date(`2024-01-01T${req.body.startTimeHour}:00Z`);
     const endHour = new Date(`2024-01-01T${req.body.endTimeHour}:00Z`);
     let currentTime = new Date(startHour);
@@ -129,13 +137,13 @@ exports.signUpDoctor = async (req, res) => {
       timeSlots.push({ startTime, endTime });
       currentTime = new Date(currentTime.getTime() + 30 * 60000);
     }
-    console.log(timeSlots);
     const schedule = new Schedule({
       docId: req.body.firebaseUserId,
       timeSlots: timeSlots,
       daysAvailable: req.body.daysAvailable,
     });
-    await schedule.save(); //Saving command for saving user to database
+    await doctor.save(); //Saving command for saving user to database
+    await schedule.save();
     return res.status(200).json({
       success: true,
       message: "Doctor Profile Created Successfully",

@@ -107,13 +107,6 @@ exports.signUpDoctor = async (req, res) => {
     const userExist = await userDoctor.findOne({
       firebaseUserId: req.body.firebaseUserId,
     });
-    if (req.body.startTimeHour > req.body.endTimeHour) {
-      return res.status(400).json({
-        success: false,
-        message: "Start time should be less than end time",
-      });
-    }
-
     if (userExist) {
       return res.status(400).json({
         success: false,

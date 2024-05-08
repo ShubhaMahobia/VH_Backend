@@ -58,6 +58,7 @@ exports.signUpPatient = async (req, res) => {
       identificationNumber: hashedIdentificationNumber,
       latitude: req.body.latitude,
       longitude: req.body.longitude,
+      userType: "patient",
     });
     const userExist = await userPatient.findOne({
       identificationNumber: req.body.identificationNumber,
@@ -102,6 +103,7 @@ exports.signUpDoctor = async (req, res) => {
       breifDescription: req.body.breifDescription,
       latitude: req.body.latitude,
       longitude: req.body.longitude,
+      userType: "doctor",
     });
     //Checking is user already exist in database or not
     const userExist = await userDoctor.findOne({

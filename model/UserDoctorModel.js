@@ -67,6 +67,10 @@ const DoctorUserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  userType: {
+    type: String,
+    required: true,
+  },
   //Adding these field to save exact address of the user by their location and we can update if we want in future.
   longitude: {
     type: String,

@@ -7,12 +7,14 @@ const {
   loginUser,
   fetchUserDetails,
   fetchDoctorDetails,
+  isPatientExist,
 } = require("../controller/authenticationController");
 
 const {
   fetchAllDoctors,
   fetchDoctorById,
   updateDoctorProfile,
+  isDoctorExisit,
 } = require("../controller/doctorController");
 
 const { updatePatientProfile } = require("../controller/patientController");
@@ -43,7 +45,8 @@ const router = express.Router();
 
 router.get("/", test);
 router.post("/registerPatient", signUpPatient);
-router.post("/checkNewUser", isNewUser);
+router.post("/isPatientExist", isPatientExist);
+router.post("/isDoctorExist", isDoctorExisit);
 router.post("/registerDoctor", signUpDoctor);
 router.post("/getUser", fetchUserDetails);
 router.post("/getDoctor", fetchDoctorDetails);

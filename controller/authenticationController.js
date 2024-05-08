@@ -17,17 +17,15 @@ exports.test = (req, res) => {
 };
 
 //This is the API to check if the user is already registered or not in our system.
-exports.isNewUser = async (req, res) => {
+exports.isPatientExist = async (req, res) => {
   try {
     const isUserExist = await userPatient.findOne({
       firebaseUserId: req.body.firebaseUserId,
     });
     if (isUserExist) {
-      return res
-        .status(400)
-        .json({ success: false, message: "User is Present in Database" });
+      return res.status(400).json({ success: true, isPresent: true });
     } else {
-      return res.status(200).json({ success: true, message: "User is new" });
+      return res.status(200).json({ success: true, isPresent: false });
     }
   } catch (error) {
     return res

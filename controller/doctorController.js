@@ -19,6 +19,24 @@ exports.fetchAllDoctors = async (req, res) => {
   }
 };
 
+exports.isDoctorExisit = async (req, res) => {
+  try {
+    const isUserExist = await userDoctor.findOne({
+      firebaseUserId: req.body.firebaseUserId,
+    });
+    if (isUserExist) {
+      return res.status(400).json({ success: true, isPresent: true });
+    } else {
+      return res.status(200).json({ success: true, isPresent: false });
+    }
+  } catch (error) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+
 // Function to fetch a doctor by ID (firebaseId)
 exports.fetchDoctorById = async (req, res) => {
   try {

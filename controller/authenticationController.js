@@ -34,6 +34,25 @@ exports.isPatientExist = async (req, res) => {
   }
 };
 
+
+//Api to check if the user is doctor or patient based on the firebaseUserId
+exports.userTypeDefine = async (req, res) => {
+  try {
+    const isUserExist = await userPatient.findOne({
+      firebaseUserId: req.body.firebaseUserId,
+    });
+    if (isUserExist) {
+      return res.status(400).json({ success: true, isPatient: true });
+    } else {
+      return res.status(200).json({ success: true, isPatient: false });
+    }
+  } catch (error) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Internal Server Error" });
+  }
+};
+
 //This is the create Profile Function for the user(Patient)
 exports.signUpPatient = async (req, res) => {
   try {

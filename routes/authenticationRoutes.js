@@ -8,6 +8,7 @@ const {
   fetchUserDetails,
   fetchDoctorDetails,
   isPatientExist,
+  userTypeDefine,
 } = require("../controller/authenticationController");
 
 const {
@@ -54,6 +55,7 @@ router.get("/getAllDoctors", fetchAllDoctors);
 router.get("/getDoctorById/:id", fetchDoctorById);
 router.put("/updatePatient/:id", updatePatientProfile);
 router.put("/updateDoctor/:id", updateDoctorProfile);
+router.post("/defineUser", userTypeDefine);
 
 //Appointment route
 router.post("/bookAppointment", bookAppointment);

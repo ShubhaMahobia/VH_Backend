@@ -33,3 +33,18 @@ exports.updatePatientProfile = async (req, res) => {
       .json({ success: false, message: "Internal Server Error" });
   }
 };
+
+exports.fetchAllPatients = async (req, res) => {
+  try {
+    const allPatients = await userPatient.find({});
+    return res.status(200).json({
+      success: true,
+      message: "Details fetched successfully",
+      data: allPatients,
+    });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error" });
+  }
+};

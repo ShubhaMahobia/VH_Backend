@@ -18,7 +18,10 @@ const {
   isDoctorExisit,
 } = require("../controller/doctorController");
 
-const { updatePatientProfile } = require("../controller/patientController");
+const {
+  updatePatientProfile,
+  fetchAllPatients,
+} = require("../controller/patientController");
 
 const {
   bookAppointment,
@@ -52,6 +55,7 @@ router.post("/registerDoctor", signUpDoctor);
 router.post("/getUser", fetchUserDetails);
 router.post("/getDoctor", fetchDoctorDetails);
 router.get("/getAllDoctors", fetchAllDoctors);
+router.get("/getAllPatients", fetchAllPatients);
 router.get("/getDoctorById/:id", fetchDoctorById);
 router.put("/updatePatient/:id", updatePatientProfile);
 router.put("/updateDoctor/:id", updateDoctorProfile);
